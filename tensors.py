@@ -1,5 +1,4 @@
 import tensorflow as tf
-import matplotlib.pyplot as plt
 
 # Criando tensor rank-2 com todos valores 1. 
 rank2 = tf.ones(shape=(2,1))
