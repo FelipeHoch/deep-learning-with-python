@@ -34,15 +34,14 @@ vectorized_test_labels = np.asarray(test_labels).astype("float32")
 
 # Model definition
 model = keras.Sequential([
-    layers.Dense(16, activation="relu"),
-    layers.Dense(16, activation="relu"),
+    layers.Dense(128, activation="relu"),
     layers.Dense(1, activation="sigmoid")
 ])
 
 # Model compiling
 model.compile(
     optimizer="rmsprop",
-    loss="binary_crossentropy",
+    loss="mse",
     metrics=["accuracy"]
 )
 
@@ -54,57 +53,75 @@ validation_train_labels = vectorized_train_labels[:10000]
 
 partial_train_labels = vectorized_train_labels[10000:]
 
-# Execute the training
+# # Execute the training
+# train_history = model.fit(
+#     partial_train_data,
+#     partial_train_labels,
+#     epochs=20,
+#     batch_size=512,
+#     validation_data=(validation_train_data, validation_train_labels
+#     )
+# )
+
 train_history = model.fit(
-    partial_train_data,
-    partial_train_labels,
-    epochs=20,
+    vectorized_train_data,
+    vectorized_train_labels,
+    epochs=4,
     batch_size=512,
-    validation_data=(validation_train_data, validation_train_labels
-    )
 )
 
-train_history_dict = train_history.history
+# train_history_dict = train_history.history
 
-# Plotting train history data
-loss_values = train_history_dict["loss"]
+# # Plotting train history data
+# loss_values = train_history_dict["loss"]
 
-validation_loss_values = train_history_dict["val_loss"]
+# validation_loss_values = train_history_dict["val_loss"]
 
-epochs = range(1, len(loss_values) + 1)
+# epochs = range(1, len(loss_values) + 1)
 
-plt.plot(epochs, loss_values, "bo", label="Training loss")
+# plt.plot(epochs, loss_values, "bo", label="Training loss")
 
-plt.plot(epochs, validation_loss_values, "b", label="Validation loss")
+# plt.plot(epochs, validation_loss_values, "b", label="Validation loss")
 
-plt.title("Training and validation loss")
+# plt.title("Training and validation loss")
 
-plt.xlabel("Epochs")
+# plt.xlabel("Epochs")
 
-plt.ylabel("Loss")
+# plt.ylabel("Loss")
 
-plt.legend()
+# plt.legend()
 
-plt.savefig("training_validation_loss.png")
+# plt.savefig("training_validation_loss.png")
 
-# Plotting train accuracy
+# # Plotting train accuracy
 
-plt.clf()
+# plt.clf()
 
-accuracy = train_history_dict["accuracy"]
+# accuracy = train_history_dict["accuracy"]
 
-validation_accuracy = train_history_dict["val_accuracy"]
+# validation_accuracy = train_history_dict["val_accuracy"]
 
-plt.plot(epochs, accuracy, "bo", label="Accuracy")
+# plt.plot(epochs, accuracy, "bo", label="Accuracy")
 
-plt.plot(epochs, validation_accuracy, "b", label="Validation Accuracy")
+# plt.plot(epochs, validation_accuracy, "b", label="Validation Accuracy")
 
-plt.title("Training and validation accuracy")
+# plt.title("Training and validation accuracy")
 
-plt.xlabel("Epochs")
+# plt.xlabel("Epochs")
 
-plt.ylabel("Accuracy")
+# plt.ylabel("Accuracy")
 
-plt.legend()
+# plt.legend()
 
-plt.savefig("training_accuracy.png")
+# plt.savefig("training_accuracy.png")
+
+
+results = model.evaluate(vectorized_test_data, vectorized_test_labels)
+
+print(results)
+
+
+
+
+
+
