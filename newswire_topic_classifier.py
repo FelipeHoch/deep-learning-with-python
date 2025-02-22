@@ -35,7 +35,7 @@ vectorized_test_labels = to_categorical(test_labels)
 
 # Model definition
 model = keras.Sequential([
-    layers.Dense(64, activation="relu"),
+    layers.Dense(128, activation="tanh"),
     layers.Dense(64, activation="relu"),
     layers.Dense(46, activation="softmax")
 ])
@@ -59,10 +59,9 @@ partial_train_labels = vectorized_train_labels[1000:]
 train_history = model.fit(
     partial_train_data,
     partial_train_labels,
-    epochs=15,
+    epochs=9,
     batch_size=512,
-    validation_data=(validation_train_data, validation_train_labels
-    )
+    validation_data=(validation_train_data, validation_train_labels)
 )
 
 train_history_dict = train_history.history
