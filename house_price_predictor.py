@@ -2,6 +2,7 @@ from tensorflow.keras.datasets import boston_housing
 from tensorflow import keras
 from tensorflow.keras import layers
 import numpy as np
+import matplotlib.pyplot as plt
 
 # Handling the data points
 def _z_score_normalization(dataset):
@@ -51,9 +52,11 @@ def _k_fold_validation(train_data, train_targets):
 
     num_val_samples = len(train_data) // k
     
-    num_epochs = 100
+    num_epochs = 1000
 
     all_scores = []
+
+    all_mse_histories = []
 
     for partition in range(k):
         print(f"Processing fold #{partition}")
@@ -79,13 +82,18 @@ def _k_fold_validation(train_data, train_targets):
 
         model = _build_model()
 
-        model.fit(
+        history = model.fit(
             partial_train_data,
             partial_train_targets,
-            epochs=num_epochs,
+            validation_data=(val_data, val_targets),
+            epochs=num_epochs,            
             batch_size=16,
             verbose=0
         )
+
+        mae_history = history.history["val_mae"]
+
+        all_mse_histories.append(mae_history)
 
         val_mse, val_mae = model.evaluate(
             val_data,
@@ -95,11 +103,28 @@ def _k_fold_validation(train_data, train_targets):
 
         all_scores.append(val_mae)
 
-    return all_scores
+    return (all_scores, all_mse_histories)
 
-
-scores = _k_fold_validation(train_data, train_targets)
+scores, history = _k_fold_validation(train_data, train_targets)
 
 print(scores)
 
 print(np.mean(scores))
+
+average_mae_history = [
+    np.mean([x[i] for x in history]) for i in range(1000)
+]
+
+average_mae_history = [float(x) for x in average_mae_history]
+
+average_mae_history = average_mae_history[10:] 
+
+print(average_mae_history)
+
+plt.plot(range(1, len(average_mae_history)+1), average_mae_history)
+
+plt.xlabel("Epochs")
+
+plt.ylabel("Validation MAE")
+
+plt.savefig("validation_mae.png")
