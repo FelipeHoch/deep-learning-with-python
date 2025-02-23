@@ -1,5 +1,5 @@
-from tensorflow import keras
-from tensorflow.keras import layers
+import keras
+from keras import layers
 
 
 inputs = keras.Input(shape=(3,), name="my_input")
