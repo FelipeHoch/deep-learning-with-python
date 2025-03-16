@@ -1,5 +1,5 @@
 import keras
-from keras import layers, activations, optimizers, losses, utils, callbacks
+from keras import layers, activations, optimizers, losses, utils, callbacks, applications
 
 import os, shutil, pathlib
 
