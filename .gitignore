@@ -171,3 +171,4 @@ cython_debug/
 .pypirc
 kaggle.json
 kaggle.json:Zone.Identifier
+convnet_from_scratch.keras
